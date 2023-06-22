@@ -77,40 +77,143 @@ app.get("/quicksearch", async (req, res) => {
   res.send(output);
 });
 
-//products wrt category + cost
+//products wrt category + filter
 app.get("/filter/:categoryId", async (req, res) => {
   let categoryId = Number(req.params.categoryId);
   let lcost = Number(req.query.lcost);
   let hcost = Number(req.query.hcost);
-  if (categoryId) {
-    query = {
-      category_id: categoryId,
-    };
-  } else if (lcost && hcost) {
-    query = {
-      category_id: categoryId,
-      $and: [{ "products.cost": { $gt: lcost, $lt: hcost } }],
-    };
-  } else {
-    query = {};
-  }
-  let collection = "product";
-  let output = await getData(collection, query);
-  res.send(output);
-});
+  let brand = req.query.brand;
+  let color = req.query.color;
+  let fabric = req.query.fabric;
+  let pattern = req.query.pattern;
+  let occasion = req.query.occasion;
+  let necktype = req.query.necktype;
+  let lengthtype = req.query.lengthtype;
+  let closure = req.query.closure;
+  let idealfor = req.query.idealfor;
+  let connectivity = req.query.connectivity;
+  let size = req.query.size;
+  let material = req.query.material;
+  let type = req.query.type;
+  let author = req.query.author;
+  let publisher = req.query.publisher;
 
-//products wrt category + filter
-app.get("/filter/:categoryId", async (req, res) => {
-  let categoryId = Number(req.params.categoryId);
-  let filterId = Number(req.query.filterId);
-  if (categoryId) {
+  //cost
+  if (lcost && hcost) {
     query = {
       category_id: categoryId,
+      $and: [{ cost: { $gt: lcost, $lt: hcost } }],
     };
-  } else if (filterId) {
+  }
+  //brand
+  else if (brand) {
     query = {
       category_id: categoryId,
-      "filter.filter_id": filterId,
+      "product_details.brand": brand,
+    };
+  }
+  //color
+  else if (color) {
+    query = {
+      category_id: categoryId,
+      "product_details.Color": color,
+    };
+  }
+  //fabric
+  else if (fabric) {
+    query = {
+      category_id: categoryId,
+      "product_details.Fabric": fabric,
+    };
+  }
+  //pattern
+  else if (pattern) {
+    query = {
+      category_id: categoryId,
+      "product_details.Pattern": pattern,
+    };
+  }
+  //occasion
+  else if (occasion) {
+    query = {
+      category_id: categoryId,
+      "product_details.Occasion": occasion,
+    };
+  }
+  //necktype
+  else if (necktype) {
+    query = {
+      category_id: categoryId,
+      "product_details.Neck_Type": necktype,
+    };
+  }
+  //lengthtype
+  else if (lengthtype) {
+    query = {
+      category_id: categoryId,
+      "product_details.Length_Type": lengthtype,
+    };
+  }
+  //closure
+  else if (closure) {
+    query = {
+      category_id: categoryId,
+      "product_details.Closure": closure,
+    };
+  }
+  //ideal for
+  else if (idealfor) {
+    query = {
+      category_id: categoryId,
+      "product_details.Ideal_for": idealfor,
+    };
+  }
+  //connectivity
+  else if (connectivity) {
+    query = {
+      category_id: categoryId,
+      "product_details.Connectivity": connectivity,
+    };
+  }
+  //size
+  else if (size) {
+    query = {
+      category_id: categoryId,
+      size: size,
+    };
+  }
+  //material
+  else if (material) {
+    query = {
+      category_id: categoryId,
+      "product_details.Material": material,
+    };
+  }
+  //type
+  else if (type) {
+    query = {
+      category_id: categoryId,
+      "product_details.Type": type,
+    };
+  }
+  //author
+  else if (author) {
+    query = {
+      category_id: categoryId,
+      "product_details.Author": author,
+    };
+  }
+  //publisher
+  else if (publisher) {
+    query = {
+      category_id: categoryId,
+      "product_details.Publisher": publisher,
+    };
+  }
+  //categoryId
+  else if (categoryId) {
+    query = {
+      category_id: categoryId,
     };
   } else {
     query = {};
@@ -123,7 +226,7 @@ app.get("/filter/:categoryId", async (req, res) => {
 //for product details
 app.get("/details/:id", async (req, res) => {
   let id = Number(req.params.id);
-  let query = { "products.item_id": id };
+  let query = { item_id: id };
   let collection = "product";
   let output = await getData(collection, query);
   res.send(output);
@@ -154,7 +257,7 @@ app.post("/placeOrder", async (req, res) => {
 //for selected product details
 app.post("/productDetails", async (req, res) => {
   if (Array.isArray(req.body.id)) {
-    let query = { "products.item_id": { $in: req.body.id } };
+    let query = { item_id: { $in: req.body.id } };
     let collection = "product";
     let output = await getData(collection, query);
     res.send(output);

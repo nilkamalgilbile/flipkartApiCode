@@ -9,7 +9,7 @@ async function dbConnect() {
   await client.connect();
 }
 
-let db = client.db("flipkart");
+let db = client.db("dbFlipkart");
 
 //getData
 async function getData(colName, query) {
