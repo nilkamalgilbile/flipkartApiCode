@@ -77,6 +77,47 @@ app.get("/quicksearch", async (req, res) => {
   res.send(output);
 });
 
+//for products
+app.get("/products/:categoryId", async (req, res) => {
+  let categoryId = Number(req.params.categoryId);
+  let prodCatId = Number(req.query.prodCatId);
+  let prodTypeId = Number(req.query.prodTypeId);
+
+  //prodCatId + prodTypeId
+  if (prodCatId && prodTypeId) {
+    query = {
+      category_id: categoryId,
+      productCategory_id: prodCatId,
+      productType_id: prodTypeId,
+    };
+  }
+  //prodCatId
+  else if (prodCatId) {
+    query = {
+      category_id: categoryId,
+      productCategory_id: prodCatId,
+    };
+  }
+  //prodCatId + prodTypeId
+  else if (prodTypeId) {
+    query = {
+      category_id: categoryId,
+      productType_id: prodTypeId,
+    };
+  }
+  //categoryId
+  else if (categoryId) {
+    query = {
+      category_id: categoryId,
+    };
+  } else {
+    query = {};
+  }
+  let collection = "product";
+  let output = await getData(collection, query);
+  res.send(output);
+});
+
 //products wrt category + filter
 app.get("/filter/:categoryId", async (req, res) => {
   let categoryId = Number(req.params.categoryId);
