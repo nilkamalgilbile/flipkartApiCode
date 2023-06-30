@@ -29,6 +29,23 @@ app.get("/category", async (req, res) => {
   res.send(output);
 });
 
+//for Product Types
+app.get("/productTypes/:categoryId", async (req, res) => {
+  let categoryId = Number(req.params.categoryId);
+  let prodCatId = Number(req.query.prodCatId);
+  if (prodCatId) {
+    query = {
+      category_id: categoryId,
+      productCategory_id: prodCatId,
+    };
+  } else {
+    query = { category_id: categoryId };
+  }
+  let collection = "productType";
+  let output = await getData(collection, query);
+  res.send(output);
+});
+
 //for Fashion
 app.get("/fashion", async (req, res) => {
   let query = { category_id: 3 };
