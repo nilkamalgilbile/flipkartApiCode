@@ -114,9 +114,10 @@ app.get("/listFilter/:categoryId", async (req, res) => {
     query = {
       category_id: categoryId,
       productCategory_id: prodCatId,
+      productType_id: "",
     };
   }
-  //prodCatId + prodTypeId
+  //prodTypeId
   else if (prodTypeId) {
     query = {
       category_id: categoryId,
