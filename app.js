@@ -46,46 +46,6 @@ app.get("/productTypes/:categoryId", async (req, res) => {
   res.send(output);
 });
 
-//for Fashion
-app.get("/fashion", async (req, res) => {
-  let query = { category_id: 3 };
-  let collection = "productType";
-  let output = await getData(collection, query);
-  res.send(output);
-});
-
-//for Electronics
-app.get("/electronics", async (req, res) => {
-  let query = { category_id: 4 };
-  let collection = "productType";
-  let output = await getData(collection, query);
-  res.send(output);
-});
-
-//for Home
-app.get("/home", async (req, res) => {
-  let query = { category_id: 5 };
-  let collection = "productType";
-  let output = await getData(collection, query);
-  res.send(output);
-});
-
-//for beauty-toys
-app.get("/beauty", async (req, res) => {
-  let query = { category_id: 6 };
-  let collection = "productType";
-  let output = await getData(collection, query);
-  res.send(output);
-});
-
-//for vehicles
-app.get("/vehicles", async (req, res) => {
-  let query = { category_id: 7 };
-  let collection = "productType";
-  let output = await getData(collection, query);
-  res.send(output);
-});
-
 //for quicksearch
 app.get("/quicksearch", async (req, res) => {
   let query = {};
@@ -131,6 +91,47 @@ app.get("/products/:categoryId", async (req, res) => {
     query = {};
   }
   let collection = "product";
+  let output = await getData(collection, query);
+  res.send(output);
+});
+
+//for all filters
+app.get("/listFilter/:categoryId", async (req, res) => {
+  let categoryId = Number(req.params.categoryId);
+  let prodCatId = Number(req.query.prodCatId);
+  let prodTypeId = Number(req.query.prodTypeId);
+
+  //prodCatId + prodTypeId
+  if (prodCatId && prodTypeId) {
+    query = {
+      category_id: categoryId,
+      productCategory_id: prodCatId,
+      productType_id: prodTypeId,
+    };
+  }
+  //prodCatId
+  else if (prodCatId) {
+    query = {
+      category_id: categoryId,
+      productCategory_id: prodCatId,
+    };
+  }
+  //prodCatId + prodTypeId
+  else if (prodTypeId) {
+    query = {
+      category_id: categoryId,
+      productType_id: prodTypeId,
+    };
+  }
+  //categoryId
+  else if (categoryId) {
+    query = {
+      category_id: categoryId,
+    };
+  } else {
+    query = {};
+  }
+  let collection = "filters";
   let output = await getData(collection, query);
   res.send(output);
 });
